@@ -93,8 +93,7 @@ WantedBy=multi-user.target
 EOF
 
 print "Downloading snapshot..."
-LATEST_SNAPSHOT=$(curl -s https://server-1.stavr.tech/Mainnet/Nibiru/ | grep -oE 'nibiru-snap-[0-9]+\.tar\.lz4' | while read SNAPSHOT; do HEIGHT=$(curl -s "https://server-1.stavr.tech/Mainnet/Nibiru/${SNAPSHOT%.tar.lz4}-info.txt" | awk '/Block height:/ {print $3}'); echo "$SNAPSHOT $HEIGHT"; done | sort -k2 -nr | head -n 1 | awk '{print $1}')
-curl -o - -L https://server-1.stavr.tech/Mainnet/Nibiru/$LATEST_SNAPSHOT | lz4 -c -d - | tar -x -C $HOME/.nibid
+curl -L https://snapshots3.stakevillage.net/cataclysm-1/snapshot_latest.tar.lz4 | tar -Ilz4 -xf - -C $HOME/.nibid/data
 
 sudo systemctl daemon-reload
 sudo systemctl enable nibid
